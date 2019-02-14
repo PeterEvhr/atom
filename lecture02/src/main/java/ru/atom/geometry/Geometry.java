@@ -22,7 +22,7 @@ public final class Geometry {
      * @return new Bar
      */
     public static Collider createBar(int firstCornerX, int firstCornerY, int secondCornerX, int secondCornerY) {
-        Collider o = new Point(firstCornerX, firstCornerY);
+        Bar o = new Bar(new Point(firstCornerX, firstCornerY), new Point(secondCornerX, secondCornerY));
         return o;
     }
 
@@ -31,7 +31,7 @@ public final class Geometry {
      * @return new Point
      */
     public static Collider createPoint(int x, int y) {
-        Collider o = new Point(x, y);
+        Point o = new Point(x, y);
         return o;
     }
 }
