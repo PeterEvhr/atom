@@ -20,8 +20,20 @@ public class Point implements Collider/* super class and interfaces here if nece
     @Override
     public boolean isColliding(Collider other)
     {
-        if (((Point)other).getxCoord() == this.getxCoord() && ((Point)other).getyCoord() == this.getyCoord())
+        if (equals(other))
             return true;
+        else if ( other instanceof Bar) {
+            Bar bar = (Bar) other;
+            int oneX = bar.getPointOne().getxCoord();
+            int twoX = bar.getPointTwo().getxCoord();
+            int oneY = bar.getPointOne().getyCoord();
+            int twoY = bar.getPointTwo().getyCoord();
+
+            if (getxCoord() >= Math.min( oneX , twoX) && getxCoord() <= Math.max(oneX, twoX) && getyCoord() >= Math.min(oneY, twoY) && getyCoord() <= Math.max(oneY, twoY))
+                return true;
+            else
+                return false;
+        }
         else
             return false;
     }
@@ -33,7 +45,7 @@ public class Point implements Collider/* super class and interfaces here if nece
         // cast from Object to Point
         Point point = (Point) o;
 
-        if (((Point) o).getxCoord() == this.getxCoord() && ((Point) o).getyCoord() == this.getyCoord())
+        if (point.getxCoord() == this.getxCoord() && point.getyCoord() == this.getyCoord())
             return true;
         else
             return false;
