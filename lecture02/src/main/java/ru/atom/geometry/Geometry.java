@@ -21,11 +21,15 @@ public final class Geometry {
      * (It is not relevant, which opposite corners you choose to define bar)
      * @return new Bar
      */
-    public static Collider createBar(int firstCornerX, int firstCornerY, int secondCornerX, int secondCornerY) {
+    public static Collider createBarAlt(int firstCornerX, int firstCornerY, int secondCornerX, int secondCornerY) {
         Bar o = new Bar(new Point(firstCornerX, firstCornerY), new Point(secondCornerX, secondCornerY));
         return o;
     }
 
+    public static Collider createBar(int firstCornerX, int firstCornerY, int secondCornerX, int secondCornerY) {
+        BarAlt o = new BarAlt(firstCornerX, firstCornerY, secondCornerX, secondCornerY);
+        return o;
+    }
     /**
      * 2D point
      * @return new Point

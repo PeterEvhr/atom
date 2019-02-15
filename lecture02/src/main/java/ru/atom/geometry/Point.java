@@ -34,6 +34,18 @@ public class Point implements Collider/* super class and interfaces here if nece
             else
                 return false;
         }
+        else if ( other instanceof BarAlt) {
+            BarAlt bar = (BarAlt) other;
+            int oneX = bar.getFirstCornerX();
+            int twoX = bar.getSecondCornerX();
+            int oneY = bar.getFirstCornerY();
+            int twoY = bar.getSecondCornerY();
+
+            if (getxCoord() >= Math.min( oneX , twoX) && getxCoord() <= Math.max(oneX, twoX) && getyCoord() >= Math.min(oneY, twoY) && getyCoord() <= Math.max(oneY, twoY))
+                return true;
+            else
+                return false;
+        }
         else
             return false;
     }
