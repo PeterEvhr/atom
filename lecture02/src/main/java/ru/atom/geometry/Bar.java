@@ -47,7 +47,19 @@ public class Bar implements Collider {
                 return true;
             one = bar.getPointOne();
             Point two = bar.getPointTwo();
-            if (one.isColliding(this) || two.isColliding(this))
+            Point three = new Point(two.getxCoord(),one.getyCoord());
+            Point four = new Point(one.getxCoord(),two.getyCoord());
+            int xmin = Math.min(one.getxCoord(), two.getxCoord());
+            int xmax = Math.max(one.getxCoord(), two.getxCoord());
+            int ymin = Math.min(one.getyCoord(), two.getyCoord());
+            int ymax = Math.max(one.getyCoord(), two.getyCoord());
+            int xtmin = Math.min(this.pointOne.getxCoord(), this.getPointTwo().getxCoord());
+            int xtmax = Math.max(this.pointOne.getxCoord(), this.getPointTwo().getxCoord());
+            int ytmin = Math.min(this.getPointOne().getyCoord(), this.getPointTwo().getyCoord());
+            int ytmax = Math.max(this.getPointOne().getyCoord(), this.getPointTwo().getyCoord());
+            if (one.isColliding(this) || two.isColliding(this) || three.isColliding(this) || four.isColliding(this)
+            || xmin <= xtmin && xmax >= xtmax && ytmin <= ymin && ytmax >= ymax
+            || xtmin <= xmin && xtmax >= xmax && ymin <= ytmin && ymax >= ytmax)
                 return true;
             else
                 return false;
@@ -62,9 +74,19 @@ public class Bar implements Collider {
 
         // cast from Object to Point
         Bar bar = (Bar) o;
-
-        if ((bar.getPointOne().equals(this.getPointOne()) ||  (bar.getPointTwo().equals(this.getPointOne())) && (bar.getPointTwo().equals(this.getPointTwo()) || bar.getPointTwo().equals(this.getPointOne()))))
-            return true;
+        int x1 = Math.min( bar.getPointOne().getxCoord(), bar.getPointTwo().getxCoord());
+        int x2 = Math.max(bar.getPointOne().getxCoord(), bar.getPointTwo().getxCoord());
+        if (x1 == Math.min(getPointOne().getxCoord(), getPointTwo().getxCoord()) && x2 == Math.max(getPointOne().getxCoord(), getPointTwo().getxCoord()))
+        {
+            int y1 = Math.min( bar.getPointOne().getyCoord(), bar.getPointTwo().getyCoord());
+            int y2 = Math.max(bar.getPointOne().getyCoord(), bar.getPointTwo().getyCoord());
+            if (y1 == Math.min(getPointOne().getyCoord(), getPointTwo().getyCoord()) && y2 == Math.max(getPointOne().getyCoord(), getPointTwo().getyCoord()))
+            {
+                return true;
+            }
+            else
+                return false;
+        }
         else
             return false;
     }
