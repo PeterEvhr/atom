@@ -1,4 +1,4 @@
-package atom.BullsAndCows.BullsAndCows;
+package atom.BullsAndCows;
 
 public class BullsAndCows {
     int count = 0;
@@ -17,7 +17,7 @@ public class BullsAndCows {
         printText(String.format("Угадайте слово . Букв в слове %s . У Вас  10 попыток", 1));
     }
 
-    private void nextAttampt() throws  {
+    private void nextAttampt() throws java.io.IOException {
         if (count < 10) {
 
             count++;
@@ -26,7 +26,7 @@ public class BullsAndCows {
             printText("Хотите сыграть еще ?");
             if (System.in.read() == 0) {
                 getNextWord();
-            } else {
+          } else {
 return;
             }
         }
