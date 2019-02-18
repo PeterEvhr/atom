@@ -1,4 +1,4 @@
-package atom.BullsAnaCows.BulsAndCows;
+package atom.BullsAndCows.BullsAndCows;
 
 public class BullsAndCows {
     int count = 0;
