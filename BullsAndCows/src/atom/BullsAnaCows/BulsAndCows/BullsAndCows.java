@@ -24,7 +24,6 @@ public class BullsAndCows {
         } else {
             printText("Попытки исчерпаны.");
             printText("Хотите сыграть еще ?");
-            System.in.read();
             if (System.in.read() == 0) {
                 getNextWord();
             } else {
