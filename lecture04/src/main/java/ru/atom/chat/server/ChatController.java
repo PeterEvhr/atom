@@ -64,12 +64,10 @@ public class ChatController {
             method = RequestMethod.POST,
             produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity logout(@RequestParam("name") String name) {
-        if (usersOnline.containsKey("name")) {
-            usersOnline.remove("name");
-        }
-   //     else {
-   //         return ResponseEntity.badRequest().body("User not found, sorry :(");
-   //     }
+        if (usersOnline.containsKey(name)) {
+            usersOnline.remove(name);
+            messages.add("[" + name + "] " + "logout");
+        } else return ResponseEntity.badRequest().body("User not found, sorry :(");
         return ResponseEntity.ok().build();
     }
 
@@ -82,9 +80,11 @@ public class ChatController {
             method = RequestMethod.POST,
             produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity say(@RequestParam("name") String name, String msg) {
-        messages.add("[" + name + "] " + msg);
-        String responseBody = String.join("\n", messages.stream().sorted().collect(Collectors.toList()));
-        return ResponseEntity.ok(responseBody);
+        if (usersOnline.containsKey(name)) {
+            messages.add("[" + name + "] " + msg);
+            String responseBody = String.join("\n", messages.stream().sorted().collect(Collectors.toList()));
+            return ResponseEntity.ok(responseBody);
+        } else return ResponseEntity.badRequest().body("User not found, sorry :(");
     }
 
 
