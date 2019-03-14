@@ -10,6 +10,7 @@ import java.util.List;
 /**
  * Created by sergey on 3/14/17.
  */
+@Ignore
 public class ThreadCreationTest {
     private static final Logger log = LogManager.getLogger(ThreadCreationTest.class);
 
