@@ -51,7 +51,7 @@ subprojects {
     tasks.withType(Checkstyle) {
         reports {
             xml.enabled false
-            html.destination "$rootProject.buildDir/report/${project.name}.html"
+            html.destination file("$rootProject.buildDir/report/${project.name}.html")
             html.stylesheet resources.text.fromFile(rootProject.file('config/checkstyle/checkstyle-custom.xsl'))
         }
     }
