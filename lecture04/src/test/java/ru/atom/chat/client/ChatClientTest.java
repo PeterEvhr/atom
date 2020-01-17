@@ -25,7 +25,7 @@ public class ChatClientTest {
     @Test
     public void viewChat() throws IOException {
         Response response = ChatClient.viewChat();
-        Sytem.out.println("[" + response + "]");
+        System.out.println("[" + response + "]");
         System.out.println(response.body().string());
         Assert.assertEquals(200, response.code());
     }
