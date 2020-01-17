@@ -65,7 +65,7 @@ public class ChatController {
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<String> logout(@RequestParam("name") String name) {
-        if ( ! usersOnline.containsKey(name)) {
+        if (! usersOnline.containsKey(name)) {
             return ResponseEntity.badRequest().body("User not logged in:(");
         }
         usersOnline.remove(name, name);
@@ -82,7 +82,7 @@ public class ChatController {
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<String> say(@RequestParam("name") String name, @RequestParam("msg") String msg) {
-        if ( ! usersOnline.containsKey(name)) {
+        if (! usersOnline.containsKey(name)) {
             return ResponseEntity.badRequest().body("User not logged in:(");
         }
         messages.add("[" + name + "] " + msg);
