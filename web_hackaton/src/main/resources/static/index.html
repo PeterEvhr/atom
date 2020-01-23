@@ -4,9 +4,10 @@
 <html>
 <body>
 <div id="header">
-    <form method="POST" id="nameform" action="javascript:void(null);" onsubmit="login()">
+    <form method="POST" id="nameform" action="javascript:void(null);">
         <input id="name" name="name" value="" style="font-size:medium" type="text">
-        <input value="Login" style="font-size:large" type="submit">
+        <input name="action" value="Login" style="font-size:large" type="submit" onclick="auth(1)">
+        <input name="action" value="Logout" style="font-size:large" type="submit" onclick="auth(2)">
     </form>
 </div>
 <div id="body">
@@ -62,13 +63,18 @@
         });
     }
 
-    function login() {
+    function auth( prm) {
         var name = $('#nameform').serialize();
+        var fun = "login";
+
+        if (prm == 2) {
+           fun = "logout";
+        }
 
         var settings = {
             "method": "POST",
             "crossDomain": true,
-            "url": "http://" + host + ":" + port + "/chat/login",
+            "url": "http://" + host + ":" + port + "/chat/" + fun,
             "data": name
         };
 

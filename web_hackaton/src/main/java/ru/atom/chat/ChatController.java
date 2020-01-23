@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import java.io.*;
 import java.util.Map;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentHashMap;
@@ -44,7 +45,8 @@ public class ChatController {
             return ResponseEntity.badRequest().body("Already logged in:(");
         }
         usersOnline.put(name, name);
-        messages.add("[" + name + "] logged in");
+        processMessage("[" + name + "] logged in");
+
         return ResponseEntity.ok().build();
     }
 
@@ -56,6 +58,10 @@ public class ChatController {
             method = RequestMethod.GET,
             produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<String> chat() {
+        if (messages.isEmpty())
+        {
+            loadHistory();
+        }
         return new ResponseEntity<>(messages.stream()
                 .map(Object::toString)
                 .collect(Collectors.joining("\n")),
@@ -70,8 +76,12 @@ public class ChatController {
             method = RequestMethod.GET,
             produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity online() {
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);//TODO
-    }
+
+ //       return new ResponseEntity<>(HttpStatus.BAD_REQUEST);//TODO
+        return new ResponseEntity<>(usersOnline.values().stream()
+                .map(Object::toString)
+                .collect(Collectors.joining("\n")),
+                HttpStatus.OK);   }
 
     /**
      * curl -X POST -i localhost:8080/chat/logout -d "name=I_AM_STUPID"
@@ -82,7 +92,13 @@ public class ChatController {
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity logout(@RequestParam("name") String name) {
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);//TODO
+   //     return new ResponseEntity<>(HttpStatus.BAD_REQUEST);//TODO
+        if (! usersOnline.containsKey(name)) {
+            return ResponseEntity.badRequest().body("User not logged in:(");
+        }
+        usersOnline.remove(name, name);
+        processMessage("[" + name + "] logged out");
+        return ResponseEntity.ok().build();
     }
 
 
@@ -95,6 +111,62 @@ public class ChatController {
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity say(@RequestParam("name") String name, @RequestParam("msg") String msg) {
-        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);//TODO
+     //   return new ResponseEntity<>(HttpStatus.BAD_REQUEST);//TODO
+        if (! usersOnline.containsKey(name)) {
+            return ResponseEntity.badRequest().body("User not logged in:(");
+        }
+        processMessage("[" + name + "]" + msg);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+    private void addToHistory(String s)
+    {
+        File file = getHistoryFile();
+        if (file == null) {
+            return;
+        }
+        try(FileWriter fw = new FileWriter(file, true);
+            BufferedWriter bw = new BufferedWriter(fw);
+            PrintWriter out = new PrintWriter(bw))
+        {
+            out.println(s);
+        } catch (IOException e) {
+            //exception handling left as an exercise for the reader
+        }
+    }
+    private void loadHistory()
+    {
+        File file = getHistoryFile();
+        if (file == null) {
+                return;
+        }
+        try(BufferedReader bufferedReader = new BufferedReader(new FileReader(file))) {
+            String line = bufferedReader.readLine();
+            while(line != null) {
+                messages.add(line);
+                line = bufferedReader.readLine();
+            }
+        } catch (FileNotFoundException e) {
+            // exception handling
+        } catch (IOException e) {
+            // exception handling
+        }
+    }
+    private void processMessage(String msg)
+    {
+        messages.add(msg);
+        addToHistory(msg);
+    }
+    private File getHistoryFile()
+    {
+        try {
+            return new File(
+                    getClass().getClassLoader().getResource("history.his").getFile()
+            );
+        }
+        catch(Exception e)
+        {
+            return null;
+        }
+
     }
 }
