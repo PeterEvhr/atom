@@ -1,6 +1,5 @@
 package ru.atom.lecture07.server.service;
 
-import com.google.common.collect.Lists;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.slf4j.LoggerFactory;
@@ -12,6 +11,7 @@ import ru.atom.lecture07.server.dao.UserDao;
 import ru.atom.lecture07.server.model.User;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -38,6 +38,6 @@ public class ChatService {
     @NotNull
     @Transactional
     public List<User> getOnlineUsers() {
-        return Lists.newArrayList(userDao.findAll());
+        return new ArrayList<>(userDao.findAll());
     }
 }
