@@ -2,6 +2,7 @@ package ru.atom.lecture07.server.dao;
 
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+import ru.atom.lecture07.server.model.Message;
 import ru.atom.lecture07.server.model.User;
 
 import javax.persistence.EntityManager;
@@ -11,44 +12,43 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
+import java.util.ArrayList;
 import java.util.List;
 
 @Transactional
 @Repository
-public class UserDaoImpl implements UserDao {
+public class MessageDaoImpl implements MessageDao {
     @PersistenceContext
     private EntityManager em;
 
     @Override
-    public User getByLogin(String login) {
+    public Message getByUser(User user) {
         CriteriaBuilder builder = em.getCriteriaBuilder();
-        CriteriaQuery<User> criteria = builder.createQuery(User.class);
-        Root<User> from = criteria.from(User.class);
+        CriteriaQuery<Message> criteria = builder.createQuery(Message.class);
+        Root<Message> from = criteria.from(Message.class);
         criteria.select(from);
-        criteria.where(builder.equal(from.get("login"), login));
-        TypedQuery<User> typed = em.createQuery(criteria);
-        User user;
+        criteria.where(builder.equal(from.get("user_id"), user));
+        TypedQuery<Message> typed = em.createQuery(criteria);
+        Message message;
         try {
-            user = typed.getSingleResult();
+            message = typed.getSingleResult();
         } catch (NoResultException e) {
             return null;
         }
-        return user;
+        return message;
+
     }
 
     @Override
-    public void save(User user) {
-        em.persist(user);
+    public void save(Message message) {
+
+        em.persist(message);
     }
 
     @Override
-    public List<User> findAll() {
-        return em.createQuery("Select t from " + User.class.getSimpleName() + " t").getResultList();
-    }
-
-    @Override
-    public void delete(User user) {
-        em.remove(user);
+    public List<Message> findAll()
+    {
+        return em.createQuery("Select t from " + Message.class.getSimpleName() + " t").getResultList();
     }
 
 }

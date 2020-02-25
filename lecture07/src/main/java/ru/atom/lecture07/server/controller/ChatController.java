@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import ru.atom.lecture07.server.model.User;
+import ru.atom.lecture07.server.model.Message;
 import ru.atom.lecture07.server.service.ChatService;
 
 import java.util.List;
@@ -61,7 +62,15 @@ public class ChatController {
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity logout(@RequestParam("name") String name) {
-        return ResponseEntity.badRequest().build();
+
+        User alreadyLoggedIn = chatService.getLoggedIn(name);
+        if (alreadyLoggedIn != null) {
+            chatService.logout(alreadyLoggedIn);
+            return ResponseEntity.ok().build();
+        }
+        return ResponseEntity.badRequest()
+                .body("Not logged in");
+
     }
 
 
@@ -92,7 +101,18 @@ public class ChatController {
             consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity say(@RequestParam("name") String name, @RequestParam("msg") String msg) {
-        return ResponseEntity.badRequest().build();
+        User user = chatService.getLoggedIn(name);
+        if (user == null) {
+            return ResponseEntity.badRequest()
+                    .body("nOT logged in");
+        }
+        chatService.addMessage(user, msg);
+        List<Message> messages = chatService.getAllMessage();
+        String responseBody =  messages.stream()
+                .map(Message::toString)
+                .collect(Collectors.joining("\n"));
+
+        return ResponseEntity.ok().body(responseBody);
     }
 
 
@@ -104,6 +124,11 @@ public class ChatController {
             method = RequestMethod.GET,
             produces = MediaType.TEXT_PLAIN_VALUE)
     public ResponseEntity<String> chat() {
-        return ResponseEntity.badRequest().build();
+        List<Message> messages = chatService.getAllMessage();
+        String responseBody = messages.stream()
+                .map(Message::toString)
+                .collect(Collectors.joining("\n"));
+
+        return ResponseEntity.ok().body(responseBody);
     }
 }
