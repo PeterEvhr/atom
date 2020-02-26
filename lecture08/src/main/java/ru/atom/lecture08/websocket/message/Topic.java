@@ -3,7 +3,7 @@ package ru.atom.lecture08.websocket.message;
 /**
  * Created by sergey on 2/2/17.
  */
-public enum Topi {
+public enum Topic {
     HELLO,
     MOVE,
     PLANT_BOMB,
