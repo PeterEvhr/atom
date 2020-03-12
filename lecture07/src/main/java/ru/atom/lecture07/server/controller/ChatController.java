@@ -18,7 +18,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Controller
-@RequestMapping("chat")
 public class ChatController {
     private static final org.slf4j.Logger log = LoggerFactory.getLogger(ChatController.class);
 
