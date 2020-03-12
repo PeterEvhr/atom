@@ -3,6 +3,7 @@ package ru.atom.lecture07.server.request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.web.socket.TextMessage;
 import ru.atom.lecture07.server.model.Message;
 import ru.atom.lecture07.server.model.User;
@@ -12,7 +13,7 @@ import ru.atom.lecture07.server.util.JsonHelper;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@Component
+@Service
 public class RequestProcessor {
 
     @Autowired

@@ -4,6 +4,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.socket.CloseStatus;
 import org.springframework.web.socket.WebSocketHandler;
@@ -11,17 +12,20 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 import ru.atom.lecture07.server.request.RequestProcessor;
+import ru.atom.lecture07.server.service.ChatService;
 
 import java.io.IOException;
 import java.util.LinkedList;
 import java.util.List;
 
-@Component
+@Controller
 @RequestMapping("/events")
 public class EventHandler extends TextWebSocketHandler implements WebSocketHandler {
 
     @Autowired
     private RequestProcessor processor;
+    @Autowired
+    private ChatService service;
 
     private static final org.slf4j.Logger log = LoggerFactory.getLogger(EventHandler.class);
 

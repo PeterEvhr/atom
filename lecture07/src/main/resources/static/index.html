@@ -50,14 +50,14 @@
 
         var message = JSON.stringify(
         {
-            "topic":"topic",
+            "topic":topic,
             "data":{
-                 "sender":"name",
-                 "msg":"msg"
+                 "sender":name,
+                 "msg":msg
             }
         });
 
-        alert("send ok");
+//        alert("send ok");
         sock.send(message);
     }
 
@@ -83,12 +83,10 @@
     }
 
     function funLogin() {
-        alert("login");
         if (sock == null)
             initSock();
         if (sock != null)
         {
-alert("sock not null");
             this.send("login","");
 //            var name = $('#nameform').serialize();
 //
